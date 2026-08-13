@@ -1147,38 +1147,46 @@ export default function App() {
                   </div>
                 </div>
               ) : (
-                <div className="bg-[#F8F8F8] border border-[#E7E7E7] rounded-[28px] overflow-hidden select-none" style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
-                  <div className="flex items-center gap-4 p-5 border-b border-[#E7E7E7]">
-                    {renderVillain(currentOrg.id, 52, currentOrg.name)}
-                    <div>
-                      <div className="text-[14px] font-bold text-black">{currentOrg.name}</div>
-                      <div className="text-[11px] text-[#666] mt-0.5">{currentOrg.gramStain}</div>
+                <div className="flex flex-col gap-4">
+                  {/* VIDEO CARD — header + video only */}
+                  <div className="bg-[#F8F8F8] border border-[#E7E7E7] rounded-[28px] overflow-hidden select-none" style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
+                    <div className="flex items-center gap-4 p-5 border-b border-[#E7E7E7]">
+                      {renderVillain(currentOrg.id, 52, currentOrg.name)}
+                      <div>
+                        <div className="text-[14px] font-bold text-black">{currentOrg.name}</div>
+                        <div className="text-[11px] text-[#666] mt-0.5">{currentOrg.gramStain}</div>
+                      </div>
+                    </div>
+                    {/* VIDEO AREA — add videoUrl to ORGS to make this live */}
+                    <div className="px-4 py-4">
+                      <VideoPlaceholder videoUrl={currentOrg.videoUrl} orgName={currentOrg.name} />
                     </div>
                   </div>
-                  {/* VIDEO AREA — add videoUrl to ORGS to make this live */}
-                  <div className="px-4 pt-4 pb-2">
-                    <VideoPlaceholder videoUrl={currentOrg.videoUrl} orgName={currentOrg.name} />
-                  </div>
-                  {/* Clinical info sections */}
-                  <div className="flex flex-col divide-y divide-[#E7E7E7] mt-2">
-                    {cardInfoSections.map(sec => (
-                      <div key={sec.key}>
-                        <button className="w-full flex items-center justify-between px-5 py-3.5 text-left" onClick={() => toggleExpand(sec.key)}>
-                          <div className="flex items-center gap-2.5">
-                            <span className="text-[16px]">{sec.icon}</span>
-                            <span className="text-[13px] font-semibold text-black">{sec.title}</span>
-                          </div>
-                          {expanded[sec.key] ? <ChevronUp className="w-4 h-4 text-[#999]" /> : <ChevronDown className="w-4 h-4 text-[#999]" />}
-                        </button>
-                        <AnimatePresence>
-                          {expanded[sec.key] && (
-                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} className="overflow-hidden">
-                              <p className="text-[13px] text-[#444] leading-relaxed px-5 pb-4">{sec.body}</p>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    ))}
+                  {/* CLINICAL INFO — separate card below video, fully accessible */}
+                  <div className="bg-[#F8F8F8] border border-[#E7E7E7] rounded-[20px] overflow-hidden" style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.04)" }}>
+                    <div className="px-5 py-3 border-b border-[#E7E7E7]">
+                      <span className="text-[11px] text-[#A8A8A8] uppercase tracking-[0.12em] font-medium">Clinical Details</span>
+                    </div>
+                    <div className="flex flex-col divide-y divide-[#E7E7E7]">
+                      {cardInfoSections.map(sec => (
+                        <div key={sec.key}>
+                          <button className="w-full flex items-center justify-between px-5 py-3.5 text-left" onClick={() => toggleExpand(sec.key)}>
+                            <div className="flex items-center gap-2.5">
+                              <span className="text-[16px]">{sec.icon}</span>
+                              <span className="text-[13px] font-semibold text-black">{sec.title}</span>
+                            </div>
+                            {expanded[sec.key] ? <ChevronUp className="w-4 h-4 text-[#999]" /> : <ChevronDown className="w-4 h-4 text-[#999]" />}
+                          </button>
+                          <AnimatePresence>
+                            {expanded[sec.key] && (
+                              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} className="overflow-hidden">
+                                <p className="text-[13px] text-[#444] leading-relaxed px-5 pb-4">{sec.body}</p>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
@@ -1773,70 +1781,18 @@ export default function App() {
     progress: Progress, settings: Settings,
   };
 
-  const SCREEN_ORDER: Screen[] = ["landing", "about", "welcome", "tutorial", "home", "flashcard", "quiz", "collection", "progress", "settings"];
-
   return (
-    <div className="min-h-screen bg-[#EBEBEB] flex flex-col items-center justify-center py-10 px-4" style={{ fontFamily: "'Inter', sans-serif" }}>
-      {/*
-        PHONE FRAME — demo only.
-        TODO Caleb: When deploying as a real app, delete everything below
-        except the inner content div, and render that as your page root.
-        Remove the bg-[#EBEBEB] wrapper, the phone bezel divs, and the
-        dynamic island and status bar. The bottom nav and screen content
-        will fill the real device viewport automatically.
-      */}
-      <div className="relative" style={{ width: 390, height: 844 }}>
-        <div className="absolute inset-0 bg-[#1A1A1A] rounded-[50px]"
-          style={{ boxShadow: "0 50px 100px rgba(0,0,0,0.4), 0 0 0 1.5px rgba(255,255,255,0.08), inset 0 0 0 2px rgba(0,0,0,0.8)" }} />
-        <div className="absolute inset-[10px] bg-white rounded-[42px] overflow-hidden">
-          <div className="absolute top-[14px] left-1/2 -translate-x-1/2 w-[120px] h-[34px] bg-black rounded-full z-[200] pointer-events-none" />
-          <div className="absolute top-[18px] left-7 right-7 flex items-center justify-between z-[150] pointer-events-none">
-            <span className="text-[13px] font-semibold text-black">9:41</span>
-            <div className="flex items-center gap-1.5">
-              <svg width="17" height="12" viewBox="0 0 17 12" fill="none">
-                <rect x="0" y="3" width="3" height="9" rx="1" fill="black" />
-                <rect x="4.5" y="2" width="3" height="10" rx="1" fill="black" />
-                <rect x="9" y="0" width="3" height="12" rx="1" fill="black" />
-                <rect x="13.5" y="0" width="3" height="12" rx="1" fill="black" opacity="0.3" />
-              </svg>
-              <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
-                <path d="M8 2.8C10 2.8 11.8 3.6 13.1 4.9L14.6 3.4C12.9 1.7 10.6 0.7 8 0.7C5.4 0.7 3.1 1.7 1.4 3.4L2.9 4.9C4.2 3.6 6 2.8 8 2.8Z" fill="black" />
-                <path d="M8 6C9.3 6 10.5 6.5 11.4 7.4L12.9 5.9C11.6 4.6 9.9 3.8 8 3.8C6.1 3.8 4.4 4.6 3.1 5.9L4.6 7.4C5.5 6.5 6.7 6 8 6Z" fill="black" />
-                <circle cx="8" cy="10.3" r="1.5" fill="black" />
-              </svg>
-              <svg width="27" height="13" viewBox="0 0 27 13" fill="none">
-                <rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="black" strokeOpacity="0.35" />
-                <rect x="2" y="2" width="19" height="9" rx="2" fill="black" />
-                <path d="M24.5 4.5V8.5C25.6 8.1 26.5 7.4 26.5 6.5C26.5 5.6 25.6 4.9 24.5 4.5Z" fill="black" fillOpacity="0.4" />
-              </svg>
-            </div>
-          </div>
-          <div className="absolute inset-0 overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div key={screen} className="absolute inset-0 overflow-y-auto overscroll-none"
-                initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }}
-                transition={{ duration: 0.18, ease: "easeOut" }}>
-                {screens[screen]}
-              </motion.div>
-            </AnimatePresence>
-            {showNav && BottomNav}
-          </div>
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[130px] h-[5px] bg-black rounded-full opacity-[0.18] z-[200] pointer-events-none" />
-        </div>
+    <div className="min-h-screen bg-white flex flex-col" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <div className="flex-1 relative overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div key={screen} className="absolute inset-0 overflow-y-auto overscroll-none bg-white"
+            initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}>
+            {screens[screen]}
+          </motion.div>
+        </AnimatePresence>
       </div>
-
-      {/* Screen jump nav — remove in production */}
-      <div className="mt-6 flex gap-2 flex-wrap justify-center max-w-lg">
-        {SCREEN_ORDER.map(s => (
-          <button key={s} onClick={() => nav(s)}
-            className={`px-3 py-1.5 rounded-full text-[11px] font-semibold capitalize transition-all ${screen === s ? "bg-black text-white" : "bg-white text-[#555] border border-[#DDD] hover:border-black"}`}>
-            {s}
-          </button>
-        ))}
-      </div>
-      <p className="mt-3 text-[11px] text-[#999] text-center">
-        MicroCards · Christopher Reeves Sr., Caleb Reeves and Christopher Reeves · Mnemonic Glyphs Studio
-      </p>
+      {showNav && BottomNav}
     </div>
   );
 }
