@@ -703,15 +703,15 @@ function ChrisCat({ size = 160 }: { size?: number }) {
 function VideoPlaceholder({ videoUrl, orgName }: { videoUrl: string; orgName: string }) {
   if (videoUrl) {
     return (
-      <div className="w-full aspect-video rounded-2xl overflow-hidden bg-black">
-        <video className="w-full h-full object-cover" src={videoUrl} controls playsInline />
+      <div className="w-full rounded-2xl overflow-hidden bg-black" style={{ aspectRatio: "9/16" }}>
+        <video className="w-full h-full object-contain" src={videoUrl} controls playsInline />
       </div>
     );
   }
   return (
-    <div className="w-full aspect-video rounded-2xl bg-[#111] flex flex-col items-center justify-center gap-2 border border-[#2a2a2a]">
-      <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-        <Video className="w-5 h-5 text-white/60" />
+    <div className="w-full rounded-2xl bg-[#111] flex flex-col items-center justify-center gap-2 border border-[#2a2a2a]" style={{ aspectRatio: "9/16" }}>
+      <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+        <Video className="w-6 h-6 text-white/60" />
       </div>
       <p className="text-[11px] text-white/40 font-medium uppercase tracking-widest">Video Coming Soon</p>
       <p className="text-[10px] text-white/25">{orgName} villain card</p>

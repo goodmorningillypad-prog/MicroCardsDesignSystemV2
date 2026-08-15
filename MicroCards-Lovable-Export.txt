@@ -719,9 +719,9 @@ function ProgressRing({ pct, size = 110, sw = 9, color = "#111" }: { pct: number
 function VideoPlaceholder({ videoUrl, orgName }: { videoUrl: string; orgName: string }) {
   if (videoUrl) {
     return (
-      <div className="w-full aspect-video rounded-2xl overflow-hidden bg-black">
+      <div className="w-full rounded-2xl overflow-hidden bg-black" style={{ aspectRatio: "9/16" }}>
         <video
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
           src={videoUrl}
           controls
           playsInline
@@ -732,7 +732,7 @@ function VideoPlaceholder({ videoUrl, orgName }: { videoUrl: string; orgName: st
   }
 
   return (
-    <div className="w-full aspect-video rounded-2xl bg-[#111] flex flex-col items-center justify-center gap-3 border border-[#222] relative overflow-hidden">
+    <div className="w-full rounded-2xl bg-[#111] flex flex-col items-center justify-center gap-3 border border-[#222] relative overflow-hidden" style={{ aspectRatio: "9/16" }}>
       <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%)", backgroundSize: "12px 12px" }} />
       <div className="relative z-10 flex flex-col items-center gap-2 text-center px-4">
         <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
